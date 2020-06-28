@@ -1,48 +1,42 @@
 using ProjectManagement
 
-tasks = (
-    start=(0,),
-    a=PertBeta(2,3,4),
-    b=PertBeta(1,2,6),
-    c=PertBeta(0,1,2),
-    d=PertBeta(0,1,2),
-    e=PertBeta(0,1,2),
-    f=PertBeta(3.0, 6.5, 13.0),
-    g=PertBeta(3.5, 7.5, 14.0),
-    h=PertBeta(0, 1, 2),
-    j=PertBeta(0, 1, 2),
-    finish=(0,),
-)
+@testset "Basic consistency $f" for f in 
+    (:empty, :onetask, :chain, :shortlong, :medium)
+    proj = getfield(Examples, f)
 
-links = [
-    :start .=> [:a, :b, :c, :d];
-    :a => :f;
-    :b .=> [:f, :g];
-    [:c, :d] .=> :e;
-    :e .=> [:f, :g, :h];
-    [:f, :g, :h] .=> :j;
-    :j => :finish;
-]
+    samples = rand(proj, 10_000);
 
-
-function sample_time(tasks, links, overall_start=:start, overall_finish=:finish)
-    realizations = Dict{Symbol, Float64}()
-    realization(task_name::Symbol) = get!(realizations, task_name) do
-        task_dist = tasks[task_name]
-        return rand(task_dist)
-    end
-
-    function time_taken(start, finish)
-        start == finish && return 0.0
-        dependencies = (pre for (pre, this) in links if this==finish)
-        time_to_begin = maximum(time_taken.(start, dependencies))
-        time_to_finish = realization(finish)
-        return time_to_begin + time_to_finish
-    end
-
-    return time_taken(overall_start, overall_finish)
+    # if we just did all tasks one after the other we get absolutely worst possible case
+    worsecase = sum(maximum, proj.task_durations)
+    # if we did everything in parallel we get absolutely best possible case
+    # but it can never be shorter than the longest minimum duration of any single task
+    bestcase = maximum(minimum, proj.task_durations)
+    @test all(bestcase ≤ s ≤ worsecase for s in samples)
 end
 
+@testset "known distribution: proj $f, task $t" for (f,t) in (
+    (:shortlong, :long), (:onetask, :a)
+)
+    # These projects have their duration fully controlled by 1 task
+    # so should use same distribution.
+    proj = getfield(Examples, f)
+    expected_dist = proj.task_durations[t]
+
+    # Make sure we would *not* reject the null hypothesios that it does indeed
+    # come from this distrubition
+    samples = rand(proj, 10_000);
+    hypo_test = HypothesisTests.OneSampleADTest(samples, expected_dist)
+    @test pvalue(hypo_test) < 0.99
+end
+
+
+
+@testset "empty project" begin
+    samples = rand(Examples.empty, 10_000)
+    @test all(iszero, samples)
+end
+
+#==
 timing_samples = [sample_time(tasks, links) for ii in 1:1_000_000];
 
 using StatsPlots
@@ -61,3 +55,4 @@ plot!(;
 extrema(timing_samples)
 
 median(timing_samples)
+==#

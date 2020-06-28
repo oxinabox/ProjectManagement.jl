@@ -1,12 +1,13 @@
 module ProjectManagement
 using Distributions
 using GraphRecipes
+using Printf
 using Random
 using RecipesBase
 using Statistics
 using Random
 using RecipesBase
-export PertBeta, Project, sample_time
+export PertBeta, Project, sample_time, PertChart
 
 #######
 # Reexports:

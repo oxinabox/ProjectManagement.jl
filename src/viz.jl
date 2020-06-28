@@ -1,7 +1,6 @@
 
-struct PertChart{T, L}
-    tasks::T
-    links::L
+struct PertChart{P}
+    proj :: P
 end
 
 function index(x::NamedTuple{L}) where L
@@ -9,29 +8,46 @@ function index(x::NamedTuple{L}) where L
     return NamedTuple{L, typeof(indexes)}(indexes)
 end
 
+is_milestone(name) = name ∈ (:start, :finish)
 
-@recipe function f(proj::Project)
-    is_milestone(name) = name ∈ (:start, :finish)
-
+function adjancy_matrix(proj::Project)
     task_index = index(proj.task_durations)
-    nodes = collect(keys(proj.task_durations))
     n = length(proj.task_durations)
-    sources = Int[]
-    dests = Int[]
+    adjmat = zeros(n, n)
     for (src, dest) in proj.links
-        push!(sources, task_index[src])
-        push!(dests, task_index[dest])
+        ii = task_index[src]
+        jj = task_index[dest]
+        adjmat[ii, jj] = 1
     end
+    return adjmat
+end
 
+function node_string(name, duration)
+    if length(duration) == 1
+        duration = only(duration)
+    end
+    return "$name\n$duration"
+end
+function node_string(name, dur::PertBeta)
+    expected = @sprintf("%.2f", mean(dur))
+    "$name\n$(minimum(dur)) | $(mode(dur)) | $(maximum(dur)) ⟹ $expected"
+end
+
+
+@recipe function f(pert::PertChart)
+    proj = pert.proj
+    adjmat = adjancy_matrix(proj)
+    nodes = collect(keys(proj.task_durations))
+    
     # set up the graphplot
-    names := String.(nodes)
+    names := [node_string(name, dur) for (name, dur) in pairs(proj.task_durations)]
     nodecolor := ifelse.(is_milestone.(nodes), "#79bbf5", "#f9f8dd")
     nodeshape := ifelse.(is_milestone.(nodes), :hexagon, :rect)
-    nodesize --> 0.2
-    method --> :spectral
+    nodesize --> 0.12
+    method --> :spring
     root --> :left
     arrow --> true
     shorten --> 0.1
     curves --> false
-    GraphRecipes.GraphPlot((sources, dests))
+    GraphRecipes.GraphPlot((adjmat,))
 end

@@ -37,24 +37,11 @@ using ProjectManagement
 end
 
 
-
-#==
-timing_samples = [sample_time(tasks, links) for ii in 1:1_000_000];
-
-using StatsPlots
-
-plot()
-density!(timing_samples; lab="time taken (sampled)")
-plot!(Normal(mean(timing_samples), var(timing_samples)); lab="moment matched gaussian")
-plot!(;
-    xlims= (5,21),
-    xticks=5:2.5:25,
-    legend=:bottom,
-    title="Completion Time",
-    xlabel="Duration (weeks)",
-)
-
-extrema(timing_samples)
-
-median(timing_samples)
-==#
+@testset "Plotting" begin
+    proj = Examples.medium
+    result, = RecipesBase.apply_recipe(Dict{Symbol, Any}(), proj)
+    xs, = result.args
+    @test length(xs) == 100_000
+    @test xs isa Vector{Float64}
+    @test result.plotattributes[:title] == "Completion Time"
+end

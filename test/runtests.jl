@@ -1,5 +1,6 @@
 using HypothesisTests
 using Random
+using RecipesBase
 using Test
 using ProjectManagement
 

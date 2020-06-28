@@ -26,3 +26,8 @@ function Random.Sampler(rng::AbstractRNG, proj::Project, ::Union{Val{1}, Val{Inf
 end
 
 Random.rand(rng::AbstractRNG, d::Random.SamplerTrivial{<:Project}) = sample_time(rng, d[])
+
+@recipe function f(proj::Project, nsamples=100_000, rng=Random.default_rng())
+    title --> "Completion Time"
+    rand(rng, proj, nsamples)
+end

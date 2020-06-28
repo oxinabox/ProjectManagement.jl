@@ -5,6 +5,7 @@ makedocs(;
     format=Documenter.HTML(),
     pages=[
         "Home" => "index.md",
+        "Demos" => "demos.md"
     ],
     repo="https://github.com/oxinabox/ProjectManagement.jl/blob/{commit}{path}#L{line}",
     sitename="ProjectManagement.jl",

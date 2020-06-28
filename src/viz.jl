@@ -10,15 +10,15 @@ function index(x::NamedTuple{L}) where L
 end
 
 
-@recipe function f(chart::PertChart)
+@recipe function f(proj::Project)
     is_milestone(name) = name ∈ (:start, :finish)
 
-    task_index = index(chart.tasks)
-    nodes = collect(keys(chart.tasks))
-    n = length(chart.tasks)
+    task_index = index(proj.task_durations)
+    nodes = collect(keys(proj.task_durations))
+    n = length(proj.task_durations)
     sources = Int[]
     dests = Int[]
-    for (src, dest) in chart.links
+    for (src, dest) in proj.links
         push!(sources, task_index[src])
         push!(dests, task_index[dest])
     end

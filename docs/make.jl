@@ -14,4 +14,5 @@ makedocs(;
 
 deploydocs(;
     repo="github.com/oxinabox/ProjectManagement.jl",
+    push_preview=true,
 )

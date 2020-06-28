@@ -2,7 +2,6 @@
 language: julia
 os:
   - linux
-  - osx
 julia:
   - 1
   - nightly
@@ -16,8 +15,8 @@ jobs:
   fast_finish: true
   include:
     - stage: Documentation
-      julia: 1.0
-      script: julia --project=docs -e '
+      julia: 1
+      script: xvfb-run julia --project=docs -e '
           using Pkg;
           Pkg.develop(PackageSpec(path=pwd()));
           Pkg.instantiate();

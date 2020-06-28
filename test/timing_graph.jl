@@ -1,5 +1,3 @@
-using ProjectManagement
-
 @testset "Sampling" begin
     @testset "Basic consistency $f" for f in 
         (:empty, :onetask, :chain, :shortlong, :medium)

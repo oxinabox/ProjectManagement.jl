@@ -9,7 +9,6 @@ makedocs(;
     repo="https://github.com/oxinabox/ProjectManagement.jl/blob/{commit}{path}#L{line}",
     sitename="ProjectManagement.jl",
     authors="Lyndon White",
-    assets=String[],
 )
 
 deploydocs(;

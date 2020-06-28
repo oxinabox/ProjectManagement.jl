@@ -12,8 +12,13 @@ struct PertBeta{T<:Real} <: ContinuousUnivariateDistribution
     a::T # min
     b::T # mode
     c::T # max
+    PertBeta{T}(a::T, b::T, c::T) where {T} = new{T}(a, b, c)
 end
 
+function PertBeta(min::T, mode::T, max::T; check_args=true) where {T<:Real}
+    check_args && Distributions.@check_args(PertBeta, min ≤ mode ≤ max)
+    return PertBeta{T}(min, mode, max)
+end
 
 function beta_dist(dd::PertBeta)
     α = (4dd.b + dd.c - 5dd.a)/(dd.c - dd.a)
@@ -37,7 +42,7 @@ for f in (:skewness, :kurtosis)
     @eval Distributions.$f(dd::PertBeta) = $f(beta_dist(dd))
 end
 for f in (:pdf, :cdf, :logpdf)
-    @eval Distributions.$f(dd::PertBeta, x) = $f(beta_dist(dd), input_shift(dd, x))
+    @eval Distributions.$f(dd::PertBeta, x::Real) = $f(beta_dist(dd), input_shift(dd, x))
 end
 
 Statistics.quantile(dd::PertBeta, x) = output_shift(dd, quantile(beta_dist(dd), x))

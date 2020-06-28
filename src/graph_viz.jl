@@ -1,5 +1,10 @@
+"""
+    PertChart(::Project)
 
-struct PertChart{P}
+By wrapping a [`Project`](@ref) object in a `PertChart`,
+it can be `plot`ed to visualize the chart.
+"""
+struct PertChart{P<:Project}
     proj :: P
 end
 

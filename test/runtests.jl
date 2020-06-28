@@ -11,7 +11,7 @@ Random.seed!(1)
         "project_examples.jl", # must be first
         "timing_distributions.jl",
         "timing_graph.jl",
-        "viz.jl",
+        "graph_viz.jl",
     )
         include(f)
     end

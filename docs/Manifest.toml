@@ -524,7 +524,7 @@ deps = ["Unicode"]
 uuid = "de0858da-6303-5e67-8744-51eddeeeb8d7"
 
 [[ProjectManagement]]
-deps = ["Distributions", "GraphRecipes", "Plots", "Random", "RecipesBase", "Statistics", "StatsPlots"]
+deps = ["Distributions", "GraphRecipes", "Plots", "Printf", "Random", "RecipesBase", "Statistics", "StatsPlots"]
 path = ".."
 uuid = "8d6fe0f5-cdf5-47ae-8203-553721bd1e97"
 version = "0.1.0"

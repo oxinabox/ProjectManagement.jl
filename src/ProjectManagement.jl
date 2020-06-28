@@ -19,5 +19,5 @@ include("project.jl")
 include("timing_distributions.jl")
 include("timing_graphs.jl")
 
-include("viz.jl")
+include("graph_viz.jl")
 end # module

@@ -1,5 +1,8 @@
 module ProjectManagement
 using Distributions
+using GraphRecipes
+using Random
+using RecipesBase
 using Statistics
 using Random
 using RecipesBase
@@ -15,4 +18,5 @@ include("project.jl")
 include("timing_distributions.jl")
 include("timing_graphs.jl")
 
+include("viz.jl")
 end # module

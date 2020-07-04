@@ -25,7 +25,7 @@
         # come from this distrubition
         samples = rand(proj, 10_000);
         hypo_test = HypothesisTests.OneSampleADTest(samples, expected_dist)
-        @test pvalue(hypo_test) < 0.99
+        @test 0.05 < pvalue(hypo_test)
     end
 
     @testset "empty project" begin

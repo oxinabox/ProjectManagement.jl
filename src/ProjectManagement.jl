@@ -1,14 +1,16 @@
 module ProjectManagement
 using DataStructures: MultiDict
+using Compose
 using Distributions
-using GraphRecipes
-using Printf
+
+using LightGraphs
+using LayeredLayouts
 using Random
 using RecipesBase
 using Statistics
 using Random
 using RecipesBase
-export PertBeta, Project, sample_time, PertChart, path_durations, critical_path
+export PertBeta, Project, sample_time, visualize_chart, path_durations, critical_path
 
 #######
 # Reexports:

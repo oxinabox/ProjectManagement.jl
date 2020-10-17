@@ -13,8 +13,8 @@ proj = {{CONSTRUCTION}}
 ### Visualizing the PERT Chart
 
 ```@example {{NAME}}
-using Plots
-plot(PertChart(proj))
+visualize_chart(proj; fontsize={{FONTSIZE}})
+Main.SVGJSWritable(ans) #hide
 ```
 
 ### Critical Path
@@ -53,5 +53,6 @@ maximum(duration_samples)
 We can plot the distribution showing the probability density function for project completion duration.
 
 ```@example {{NAME}}
+using Plots
 density(proj; legend=false)
 ```

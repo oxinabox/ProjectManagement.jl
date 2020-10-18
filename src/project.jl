@@ -43,8 +43,18 @@ function validate_milestones(proj)
     before_start = [a for (a, b) in proj.links if b === :start]
     isempty(before_start) || throw(PreStartTasksException(before_start))
 
-    return nothing
+    validate_milestone_duration(proj, :start)
+    validate_milestone_duration(proj, :finish)
 end
+
+
+function validate_milestone_duration(proj, milestone_name)
+    dur = proj.task_durations[milestone_name]
+    if length(dur) != 1 || !iszero(only(dur))
+        throw(BadMilestoneDurationException(milestone_name, dur))
+    end
+end
+
 
 """
     validate_links(proj)
@@ -56,7 +66,6 @@ Checks that:
 """
 function validate_links(proj)
     children_lookup = MultiDict(proj.links)
-    children_lookup
     all_seen = Set{Symbol}()  # for checking at the end that everything was covered
 
     function inner(node, path)
@@ -86,6 +95,15 @@ end
 
 struct MissingMilestoneException <: Exception
     milestone
+end
+
+struct BadMilestoneDurationException <: Exception
+    milestone_name
+    duration
+end
+function Base.showerror(io::IO, err::BadMilestoneDurationException)
+    print(io, "The Milestone $(err.milestone_name) has duration $(err.duration). ")
+    print(io, "milestones must have singlton duration, that is zero valued.")
 end
 
 struct PostFinishTasksException <: Exception

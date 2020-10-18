@@ -34,8 +34,14 @@
 
     @testset "Static Length" begin
         proj = Project(
-            (start=0, a=1, b=2, c=3, finish=0,),
-            [:start => :a, :a => :b, :a =>:c, :b => :finish, :c => :finish]
+            (start=0, common=1, short=2, long=3, finish=0,),
+            [
+                :start => :common,
+                :common => :short,
+                :common =>:long,
+                :short => :finish,
+                :long => :finish
+            ]
         )
         samples = rand(proj, 10_000)
         @test all(x->x==4, samples)

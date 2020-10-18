@@ -8,7 +8,7 @@ using RecipesBase
 using Statistics
 using Random
 using RecipesBase
-export PertBeta, Project, sample_time, PertChart
+export PertBeta, Project, sample_time, PertChart, path_durations, critical_path
 
 #######
 # Reexports:
@@ -19,6 +19,6 @@ export density
 include("project.jl")
 include("timing_distributions.jl")
 include("timing_graphs.jl")
-
+include("paths.jl")
 include("graph_viz.jl")
 end # module

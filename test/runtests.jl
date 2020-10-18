@@ -12,6 +12,7 @@ Random.seed!(1)
         "project.jl",
         "timing_distributions.jl",
         "timing_graph.jl",
+        "paths.jl",
         "graph_viz.jl",
     )
         include(f)

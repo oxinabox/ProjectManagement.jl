@@ -1,5 +1,5 @@
 @testset "Sampling" begin
-    @testset "Basic consistency $f" for f in 
+    @testset "Basic consistency $f" for f in
         (:empty, :onetask, :chain, :shortlong, :medium)
         proj = getfield(Examples, f)
 
@@ -15,8 +15,7 @@
 
     @testset "known distribution: proj $f, task $t" for (f,t) in (
         (:shortlong, :long), (:onetask, :a)
-    )
-        # These projects have their duration fully controlled by 1 task
+    )        # These projects have their duration fully controlled by 1 task
         # so should use same distribution.
         proj = getfield(Examples, f)
         expected_dist = proj.task_durations[t]
@@ -31,6 +30,15 @@
     @testset "empty project" begin
         samples = rand(Examples.empty, 10_000)
         @test all(iszero, samples)
+    end
+
+    @testset "Static Length" begin
+        proj = Project(
+            (start=0, a=1, b=2, c=3, finish=0,),
+            [:start => :a, :a => :b, :a =>:c, :b => :finish, :c => :finish]
+        )
+        samples = rand(proj, 10_000)
+        @test all(x->x==4, samples)
     end
 end
 

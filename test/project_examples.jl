@@ -3,8 +3,8 @@ using ProjectManagement
 
 const empty = Project(
     (
-        start=(0,),
-        finish=(0,),
+        start=0,
+        finish=0,
     ),
     [
         :start => :finish,
@@ -13,9 +13,9 @@ const empty = Project(
 
 const onetask = Project(
     (
-        start=(0,),
+        start=0,
         a = PertBeta(0,1,2),
-        finish=(0,),
+        finish=0,
     ),
     [
         :start => :a,
@@ -26,10 +26,10 @@ const onetask = Project(
 "Two tasks in parellel `:short` and `:long`. `:long` completely controls the timing."
 const shortlong = Project(
     (
-        start=(0,),
+        start=0,
         short = PertBeta(0,1,2),
         long = PertBeta(10,100,200),
-        finish=(0,),
+        finish=0,
     ),
     [
         :start .=> [:short, :long];
@@ -40,11 +40,11 @@ const shortlong = Project(
 
 const chain = Project(
     (
-        start=(0,),
+        start=0,
         a=PertBeta(1,2,3),
         b=PertBeta(10,20,30),
         c=PertBeta(100,200,300),
-        finish=(0,),
+        finish=0,
     ),
     [
         :start => :a,
@@ -56,7 +56,7 @@ const chain = Project(
 
 const medium = Project(
     (
-        start=(0,),
+        start=0,
         a=PertBeta(2,3,4),
         b=PertBeta(1,2,6),
         c=PertBeta(0,1,2),
@@ -66,7 +66,7 @@ const medium = Project(
         g=PertBeta(3.5, 7.5, 14.0),
         h=PertBeta(0, 1, 2),
         j=PertBeta(0, 1, 2),
-        finish=(0,),
+        finish=0,
     ),
     [
         :start .=> [:a, :b, :c, :d];

@@ -74,11 +74,10 @@ function validate_links(proj)
         children = get(children_lookup, node, nothing)
         children === nothing && throw(DisconnectedPathException(path))
         for child in children
-            # PREM-OPT: this could use a PersistentList or pop! after rather than copying
-            new_path = copy(path)
-            push!(new_path, child)
-            child ∈ path && throw(CyclicPathException(new_path))
-            inner(child, new_path)
+            push!(path, child)
+            child ∈ path[1:end-1] && throw(CyclicPathException(path))
+            inner(child, path)
+            pop!(path)  # take it off before we do the next
         end
     end
 

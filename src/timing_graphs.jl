@@ -4,7 +4,11 @@ function sample_time(
     realizations = Dict{Symbol, Float64}()
     realization(task_name::Symbol) = get!(realizations, task_name) do
         task_dist = proj.task_durations[task_name]
-        return rand(rng, task_dist)
+        if task_dist isa Real  # it is some constant
+            return task_dist
+        else  # it is a collection or a Distribution
+            rand(rng, task_dist)
+        end
     end
 
     function time_taken(start, finish)

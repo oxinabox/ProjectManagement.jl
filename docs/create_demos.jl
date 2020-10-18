@@ -1,20 +1,20 @@
 const examples = [
     "Empty_Example" => raw"""Project(
         (
-            start=(0,),
-            finish=(0,),
+            start=0,
+            finish=0,
         ),
         [
             :start => :finish,
         ]
     )
     """,
-    
+
     "One_Task_Example" => raw"""Project(
         (
-            start=(0,),
+            start=0,
             a = PertBeta(0,1,2),
-            finish=(0,),
+            finish=0,
         ),
         [
             :start => :a,
@@ -22,13 +22,13 @@ const examples = [
         ]
     )
     """,
-    
+
     "Shortlong_Example" => raw"""Project(
         (
-            start=(0,),
+            start=0,
             short = PertBeta(0,1,2),
             long = PertBeta(10,20,200),
-            finish=(0,),
+            finish=0,
         ),
         [
             :start .=> [:short, :long];
@@ -36,15 +36,15 @@ const examples = [
         ]
     )
     """,
-    
-    
+
+
     "Chain_Example" => raw"""Project(
         (
-            start=(0,),
+            start=0,
             a=PertBeta(1,2,3),
             b=PertBeta(10,20,30),
             c=PertBeta(100,200,600),
-            finish=(0,),
+            finish=0,
         ),
         [
             :start => :a,
@@ -54,10 +54,10 @@ const examples = [
         ]
     )
     """,
-    
+
     "Realistic_Example" => raw"""Project(
         (
-            start=(0,),
+            start=0,
             a=PertBeta(2,3,4),
             b=PertBeta(1,2,6),
             c=PertBeta(0,1,2),
@@ -67,7 +67,7 @@ const examples = [
             g=PertBeta(3.5, 7.5, 14.0),
             h=PertBeta(0, 1, 2),
             j=PertBeta(0, 1, 2),
-            finish=(0,),
+            finish=0,
         ),
         [
             :start .=> [:a, :b, :c, :d];
@@ -84,7 +84,7 @@ const examples = [
 
 function create_demofiles()
     demo_dir = mkpath(joinpath(@__DIR__, "src", "demos",))
-    template = String(read(joinpath(@__DIR__, "demo_template.md"))) 
+    template = String(read(joinpath(@__DIR__, "demo_template.md")))
     for (name, construction) in examples
         filled_template = replace(template, "{{NAME}}" => name)
         filled_template = replace(filled_template, "{{CONSTRUCTION}}" => construction)

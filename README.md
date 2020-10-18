@@ -7,3 +7,9 @@
 
 ProjectManagement.jl is a julia package based around traditional project management.
 In particular it focuses on [PERT charts](https://en.wikipedia.org/wiki/Program_evaluation_and_review_technique).
+
+
+## Features
+ - PERT Chart drawing
+ - Critical path identification and cost computation
+ - Monte Carlo duration sampling (and thus duration plots and statistics)

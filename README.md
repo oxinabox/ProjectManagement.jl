@@ -13,3 +13,8 @@ In particular it focuses on [PERT charts](https://en.wikipedia.org/wiki/Program_
  - PERT Chart drawing
  - Critical path identification and cost computation
  - Monte Carlo duration sampling (and thus duration plots and statistics)
+
+<br>
+<br>
+
+![PERT Chart Example](https://user-images.githubusercontent.com/5127634/96350424-a0514780-10ad-11eb-8d16-7bf766cd8c6a.png)

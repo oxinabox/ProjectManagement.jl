@@ -12,7 +12,7 @@ In particular it focuses on [PERT charts](https://en.wikipedia.org/wiki/Program_
 ## Features
  - PERT Chart drawing
  - Critical path identification and cost computation
- - Monte Carlo duration sampling (and thus duration plots and statistics)
+ - Monte Carlo duration sampling (and thus probability distributions of duration and derived statistics)
 
 <br>
 <br>

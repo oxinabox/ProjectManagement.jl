@@ -18,3 +18,7 @@ In particular it focuses on [PERT charts](https://en.wikipedia.org/wiki/Program_
 <br>
 
 ![PERT Chart Example](https://user-images.githubusercontent.com/5127634/96350424-a0514780-10ad-11eb-8d16-7bf766cd8c6a.png)
+
+<br>
+
+[Release Thread on JuliaLang Dicourse](https://discourse.julialang.org/t/ann-projectmanagement-jl/48693)

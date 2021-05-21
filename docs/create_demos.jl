@@ -99,6 +99,55 @@ const examples = [
         """,
         2.5,
     ),
+    (
+        "Larger_Realistic_Example",
+        raw"""Project(
+            (
+                start=0,
+                t1a=PertBeta(2,3,4),
+                t1b=PertBeta(2,3,5),
+                t1c=PertBeta(3,4,5),
+                t2a=PertBeta(1,2,3),
+                t2b=PertBeta(1,2,3),
+                t2c=PertBeta(1,2,3),
+                t3a=PertBeta(2,3,4),
+                t3b=PertBeta(1,2,3),
+                t3c=PertBeta(2,5,7),
+                t3d=PertBeta(5,8,12),
+                t3e=PertBeta(2,3,4),
+                t4a=PertBeta(1,2,4),
+                t4b=PertBeta(5,8,12),
+                t4c=PertBeta(5,8,12),
+                t4d=PertBeta(2,3,4),
+                t5a=PertBeta(1,2,3),
+                t5b=PertBeta(5,7,8),
+                t5c=PertBeta(3,5,7),
+                t6a=PertBeta(5,6,7),
+                t6b=PertBeta(3,6,10),
+                t6c=PertBeta(3,6,8),
+                t7a=PertBeta(2,4,6),
+                t7b=PertBeta(2,3,4),
+                finish=0,
+            ),
+            [
+                [:start] .=> [:t1c, :t1a, :t2a, :t3a, :t4a, :t6a, :t7a];
+                [:t1a] .=> [:t1b, :t4b, :t4c];
+                [:t1b] .=> [:t4b, :t4c];
+                [:t1c] .=> [:t4b, :t4c];
+                :t2a => :t2b; :t2b => :t2c; :t2c => :finish;
+                :t3a => :t3b; :t3b => :t3c; :t3c => :t3d; :t3d => :t3e; :t3e => :finish;
+                :t4a => :t4b;
+                [:t4b, :t4c] .=> :t4d;
+                :t4d => :finish;
+                [:t4b, :t4c] .=> :t5a;
+                :t5a => :t5b; :t5b => :t5c; :t5c => :finish;
+                :t6a => :t6b; :t6b => :t6c; :t6c => :finish;
+                :t7a => :t7b; :t7b => :finish;
+            ]
+        )
+        """,
+        1.0,
+    )
 ]
 
 

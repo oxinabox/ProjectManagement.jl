@@ -1,20 +1,24 @@
-name: Run the Julia Package Butler
+# Disabled as otherwise it will:
+# - change tagbot to use old cron version https://github.com/davidanthoff/julia-pkgbutler/issues/16
+# - change ci to test on every OS, every architecture, every julia version
 
-on:
-  push:
-    branches:
-      - master
-  schedule:
-    - cron: '0 */1 * * *'
+# name: Run the Julia Package Butler
 
-jobs:
-  butler:
-    name: "Run Package Butler"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: davidanthoff/julia-pkgbutler@releases/v1
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          ssh-private-key: ${{ secrets.JLPKGBUTLER_TOKEN }}
-          channel: stable
+# on:
+#   push:
+#     branches:
+#       - master
+#   schedule:
+#     - cron: '0 */1 * * *'
+
+# jobs:
+#   butler:
+#     name: "Run Package Butler"
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v2
+#       - uses: davidanthoff/julia-pkgbutler@releases/v1
+#         with:
+#           github-token: ${{ secrets.GITHUB_TOKEN }}
+#           ssh-private-key: ${{ secrets.JLPKGBUTLER_TOKEN }}
+#           channel: stable

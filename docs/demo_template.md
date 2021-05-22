@@ -53,6 +53,5 @@ maximum(duration_samples)
 We can plot the distribution showing the probability density function for project completion duration.
 
 ```@example {{NAME}}
-using Plots
-density(proj; legend=false)
+density(proj)
 ```

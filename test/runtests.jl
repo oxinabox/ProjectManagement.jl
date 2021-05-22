@@ -1,6 +1,9 @@
+using Distributions
+using Gadfly
 using HypothesisTests
 using Random
 using RecipesBase
+using Statistics
 using Test
 using ProjectManagement
 

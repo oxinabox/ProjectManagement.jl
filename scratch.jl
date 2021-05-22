@@ -1,6 +1,6 @@
 using ProjectManagement
 using Compose
-using LinearAlgebra: Tridiagonal
+using LinearAlgebra
 using LightGraphs
 using LayeredLayouts
 
@@ -46,6 +46,7 @@ set_default_graphic_size(22cm, 22cm)
 
 # 1D (can do x and y independently)
 function compute_control_points(knots)
+    println("-----------------")
     # based on based on equations from https://www.particleincell.com/2012/bezier-splines/
     # and https://www.codeproject.com/Articles/31859/Draw-a-Smooth-Curve-through-a-Set-of-2D-Points-wit
     # but not using Thomas algorithm cos that gives worse results than julia's `\`
@@ -72,21 +73,23 @@ function compute_control_points(knots)
         ones(n-1),
     )
     # lhs * q1 = rhs
-    @show q1 =  lhs\rhs
 
     display(lhs)
+    @show knots
     @show lhs
     @show rhs
+    @show q1 =  lhs\rhs
+
 
     # TODO the above equation for q1 should be used instead of the below for p1
     # they should be equivielent, but looks like i am computing q1 wrong
     #################################
 
     # rhs vector
-    a = Vector{Float32}(undef, n)
-    b = Vector{Float32}(undef, n)
-    c = Vector{Float32}(undef, n)
-    r = Vector{Float32}(undef, n)
+    a = Vector{Float64}(undef, n)
+    b = Vector{Float64}(undef, n)
+    c = Vector{Float64}(undef, n)
+    r = Vector{Float64}(undef, n)
 
     a[1]=0
     b[1]=2
@@ -95,6 +98,7 @@ function compute_control_points(knots)
 
     # internal segments
     for i in 2:(n-1)
+        @show i
         a[i]=1;
         b[i]=4;
         c[i]=1;
@@ -110,22 +114,13 @@ function compute_control_points(knots)
 
     # TODO use `\`
     #/*solves Ax=b with the Thomas algorithm (from Wikipedia)*/
-    for i in 2:(n-1)
-        m = a[i]/b[i-1];
-        b[i] = b[i] - m * c[i - 1];
-        r[i] = r[i] - m*r[i-1];
-    end
-
-    p1[end] = r[end]/b[end];
-    for i in (n-1):-1:1
-        p1[i] = (r[i] - c[i] * p1[i+1]) / b[i]
-    end
+    p1 = thomas_algorithm!(a, b, c, r))
     @show p1
 
     #####################
 
     #/*we have p1, now compute p2*/
-    p2 = Vector{Float32}(undef, n)
+    p2 = Vector{Float64}(undef, n)
     for i in 1:(n-1)
         p2[i] = 2knots[i+1] - p1[i+1];
     end
@@ -136,7 +131,6 @@ end
 
 function connected_curve(xs, ys)
     path = collect(zip(xs, ys))
-    @show path
     length(path) == 2 && return line(path)
 
     starts = path[1:end-1]
@@ -171,3 +165,81 @@ return compose(
         (context(), (connected_curve(x_factor.*xs, y_factor.*ys) for (xs, ys) in values(path_map))..., stroke("red"))
     ),
 )
+
+
+#####################
+
+function thomas_algorithm!(a, b, c, r, ::Val{1})
+    n = length(b)
+    for i in 2:(n-1)
+        m = a[i]/b[i-1];
+        b[i] = b[i] - m * c[i - 1];
+        r[i] = r[i] - m*r[i-1];
+    end
+    # write output into `a`, since we are done with that
+    a[end] = r[end]/b[end];
+    for i in (n-1):-1:1
+        @show i c[i]
+        a[i] = (r[i] - c[i] * a[i+1]) / b[i]
+    end
+    return a
+end
+
+function thomas_algorithm!(a, b, c, d, ::Val{2})
+    n = length(b)
+    dp = similar(d)
+    cp = similar(c)
+
+    dp[1] = d[1]/b[1]
+    cp[1] = c[1]/b[1]
+    for i in 2:n
+        r = 1/(b[i] - a[i]*c[i-1])
+        dp[i] = r*(d[i] - a[i]*d[i-1])
+        cp[i] = r * c[i]
+    end
+    for i in (n-1):-1:1
+        d[i] = dp[i] - cp[i]*d[i+1]
+    end
+    return d
+end
+
+function thomas_algorithm(lhs::Tridiagonal, r, ver=Val(1))
+    a = [0; diag(lhs, -1)]
+    b = diag(lhs)
+    c = [diag(lhs, 1); 0]
+    return thomas_algorithm!(a, b, c, r, ver)
+end
+
+lhs = Tridiagonal([2.0 1.0; 2.0 7.0])
+rhs = [1.800000007527517, -7.400000108059436]
+lhs\rhs
+thomas_algorithm(lhs, rhs)
+thomas_algorithm(lhs, rhs, Val(2))
+
+lhs*(lhs\rhs)
+lhs*thomas_algorithm(lhs, rhs)
+lhs*thomas_algorithm(lhs, rhs, Val(2))
+
+#####################
+
+lhs = Tridiagonal([1., 2], [10., 20, 30], [1., 2])
+rhs = [11., 12, 13]
+lhs\rhs
+lhs*(lhs\rhs)
+
+thomas_algorithm(lhs, rhs)
+lhs*thomas_algorithm(lhs, rhs)
+
+
+#####################
+
+using Interpolations
+
+path1 = path_map |> values |> first
+
+csi = CubicSplineInterpolation(path1[1])
+
+bs = BSpline(Cubic(Line(OnGrid())))
+
+itp = interpolate([1,2,3,4], bs)
+itp.coefs

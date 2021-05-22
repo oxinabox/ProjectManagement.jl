@@ -60,7 +60,8 @@ Each task is places to the right of the tasks that much be completed first.
 """
 function visualize_chart(proj; fontsize=2)
     graph = SimpleDiGraph(ProjectManagement.adjancy_matrix(proj))
-    xs_original, ys_original = solve_positions(Zarate(), graph)
+    xs_original, ys_original, path_map = solve_positions(Zarate(), graph)
+    @show values(path_map)
     x_factor = 9
     y_factor = 6
     xs = x_factor .* xs_original

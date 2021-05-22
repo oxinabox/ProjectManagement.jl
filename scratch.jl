@@ -72,7 +72,7 @@ function compute_control_points(knots)
         ones(n-1),
     )
     # lhs * q1 = rhs
-    q1 =  lhs\rhs
+    @show q1 =  lhs\rhs
 
     display(lhs)
     @show lhs

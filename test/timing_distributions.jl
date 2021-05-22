@@ -1,11 +1,3 @@
-using StatsPlots
-
-using ProjectManagement
-using Distributions
-using Statistics
-using Random
-using Test
-
 @testset "PertBeta" begin
     @testset "basic" begin
         dist = PertBeta(4, 10, 20)

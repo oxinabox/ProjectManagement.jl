@@ -2,6 +2,7 @@ module ProjectManagement
 using DataStructures: MultiDict
 using Compose
 using Distributions
+using Gadfly: Gadfly
 
 using LightGraphs
 using LayeredLayouts
@@ -9,14 +10,9 @@ using Random
 using RecipesBase
 using Statistics
 using Random
-using RecipesBase
-export PertBeta, Project, sample_time, visualize_chart, path_durations, critical_path
+export PertBeta, Project
+export critical_path, density, sample_time, path_durations, visualize_chart
 
-#######
-# Reexports:
-using StatsPlots: density
-export density
-####
 
 include("project.jl")
 include("timing_distributions.jl")

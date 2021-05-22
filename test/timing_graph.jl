@@ -50,10 +50,25 @@ end
 
 
 @testset "Plotting" begin
-    proj = Examples.medium
-    result, = RecipesBase.apply_recipe(Dict{Symbol, Any}(), proj)
-    xs, = result.args
-    @test length(xs) == 100_000
-    @test xs isa Vector{Float64}
-    @test result.plotattributes[:title] == "Completion Time"
+    @testset "RecipeBase" begin
+        proj = Examples.medium
+        result, = RecipesBase.apply_recipe(Dict{Symbol, Any}(), proj)
+        xs, = result.args
+        @test length(xs) == 100_000
+        @test xs isa Vector{Float64}
+        @test result.plotattributes[:title] == "Completion Time"
+    end
+
+    @testset "Gadfly" begin
+        proj = Examples.medium
+        result = density(proj)
+
+        xs = result.data.x
+        @test length(xs) == 100_000
+        @test xs isa Vector{Float64}
+
+        geom = only(result.layers).geom
+        @test geom isa Gadfly.Geom.LineGeometry
+        @test geom.default_statistic isa Gadfly.Stat.DensityStatistic
+    end
 end

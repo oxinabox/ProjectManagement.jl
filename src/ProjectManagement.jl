@@ -4,7 +4,7 @@ using Compose
 using Distributions
 using Gadfly: Gadfly
 
-using LightGraphs
+using Graphs
 using LayeredLayouts
 using Random
 using RecipesBase
